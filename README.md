@@ -1,4 +1,4 @@
-# THERMAL.MON: Debian workstation monitor
+# KANSO.CORE: Debian workstation monitor
 
 A local-only browser dashboard for Linux hardware temperatures, fans, GPU/CPU telemetry and storage sensors. It uses Python's standard library; no Flask, npm, cloud service or third-party Python package is required.
 
