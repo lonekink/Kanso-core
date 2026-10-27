@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THERMAL / Workstation Monitor</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand"><div class="brand-mark">T<span>°</span></div><div><div class="eyebrow">SYSTEM TELEMETRY / LOCAL NODE</div><h1>THERMAL<span class="muted">.MON</span></h1></div></div>
+    <div class="top-right"><span class="live-dot"></span><span id="status">CONNECTING</span><span class="divider">/</span><span id="hostname">LOCAL HOST</span><button id="settings-open" class="icon-button" title="Alert settings">⚙</button></div>
+  </header>
+  <main>
+    <section class="overview-head"><div><div class="eyebrow">OVERVIEW / 01</div><h2>Hardware status</h2><p class="subtext">Live readings from sensors exposed by the Linux kernel.</p></div><div class="updated">LAST UPDATE <strong id="updated">--:--:--</strong><br><span id="interval">POLL / 2 SEC</span></div></section>
+    <section class="metrics-grid">
+      <article class="metric-card hero-card"><div class="card-head"><span>CPU PACKAGE</span><span class="tag" id="cpu-state">WAITING</span></div><div class="metric-value"><span id="cpu-temp">--</span><small>°C</small></div><div class="metric-meta"><span>UTILIZATION</span><strong id="cpu-util">--%</strong></div><div class="meter"><i id="cpu-meter"></i></div><div class="card-foot"><span>PACKAGE / TCTL / TDIE</span><span id="cpu-note">SENSOR SEARCH</span></div></article>
+      <article class="metric-card"><div class="card-head"><span>GPU CORE</span><span class="tag" id="gpu-state">SEARCHING</span></div><div class="metric-value"><span id="gpu-temp">--</span><small>°C</small></div><div class="metric-meta"><span>POWER DRAW</span><strong id="gpu-power">-- W</strong></div><div class="meter"><i id="gpu-meter"></i></div><div class="card-foot"><span id="gpu-name">AMD GPU</span><span id="gpu-util">UTIL --</span></div></article>
+      <article class="metric-card"><div class="card-head"><span>CPU POWER</span><span class="tag">WATTS</span></div><div class="metric-value"><span id="cpu-power">--</span><small>W</small></div><div class="metric-meta"><span>READING</span><strong id="power-source">WHEN AVAILABLE</strong></div><div class="meter"><i id="power-meter"></i></div><div class="card-foot"><span>POWER / ESTIMATE</span><span>HARDWARE-DEPENDENT</span></div></article>
+      <article class="metric-card"><div class="card-head"><span>FAN TELEMETRY</span><span class="tag" id="fan-state">--</span></div><div class="metric-value"><span id="fan-count">--</span><small>FANS</small></div><div class="metric-meta"><span>HIGHEST RPM</span><strong id="fan-max">-- RPM</strong></div><div class="meter"><i id="fan-meter"></i></div><div class="card-foot"><span>FAN TACHOMETERS</span><span>RPM ONLY</span></div></article>
+    </section>
+    <section class="panel chart-panel"><div class="panel-heading"><div><div class="eyebrow">LIVE HISTORY / 02</div><h2>Thermal trend</h2></div><div class="legend"><span><i class="legend-cpu"></i>CPU °C</span><span><i class="legend-gpu"></i>GPU °C</span><select id="range"><option value="60">1 MIN</option><option value="300">5 MIN</option><option value="900">15 MIN</option><option value="3600" selected>1 HOUR</option></select></div></div><canvas id="chart" height="230"></canvas><div class="chart-axis"><span id="chart-left">NOW - 60 MIN</span><span>TIME →</span><span>LIVE</span></div></section>
+    <div class="lower-grid">
+      <section class="panel"><div class="panel-heading"><div><div class="eyebrow">DISCOVERED / 03</div><h2>Temperature sensors</h2></div><span class="counter" id="sensor-count">00</span></div><div id="sensors" class="sensor-list"><div class="empty">Waiting for sensor discovery...</div></div></section>
+      <section class="panel"><div class="panel-heading"><div><div class="eyebrow">COOLING / 04</div><h2>Fan speeds</h2></div><span class="counter" id="fan-list-count">00</span></div><div id="fans" class="sensor-list"><div class="empty">Waiting for tachometer data...</div></div></section>
+    </div>
+    <section class="panel storage-panel"><div class="panel-heading"><div><div class="eyebrow">STORAGE / 05</div><h2>Drive temperatures</h2></div><span class="counter" id="drive-count">00</span></div><div id="storage" class="drive-grid"><div class="empty">Checking NVMe and SMART sensors...</div></div></section>
+    <section class="panel"><div class="panel-heading"><div><div class="eyebrow">DIAGNOSTICS / 06</div><h2>Sensor availability</h2></div><span class="tag">DETECTED</span></div><div id="capabilities" class="capability-grid"></div><p class="footnote">Unavailable measurements are shown as “N/A”. Readings depend on kernel drivers, device support and permissions. No control of fan curves or voltage is performed.</p></section>
+  </main>
+  <footer><span>THERMAL / LOCAL MONITOR</span><span>NO CLOUD · NO TRACKING · READ-ONLY TELEMETRY</span><span id="footer-time">DEBIAN / LINUX</span></footer>
+</div>
+<div class="toast" id="toast"></div>
+<dialog id="settings">
+  <form method="dialog" id="settings-form">
+    <div class="panel-heading"><div><div class="eyebrow">CONFIGURATION</div><h2>Temperature alerts</h2></div><button class="icon-button" value="cancel">✕</button></div>
+    <label>CPU warning threshold <div class="input-row"><input id="cpu-threshold" type="number" min="40" max="110" value="85"><span>°C</span></div></label>
+    <label>GPU warning threshold <div class="input-row"><input id="gpu-threshold" type="number" min="40" max="120" value="85"><span>°C</span></div></label>
+    <label class="check-label"><input id="alerts-enabled" type="checkbox" checked> Enable in-dashboard alerts</label>
+    <p class="footnote">Thresholds trigger browser-side warnings only. They do not shut down the system or change fan settings.</p>
+    <button class="primary" id="save-settings" value="save">SAVE SETTINGS</button>
+  </form>
+</dialog>
+<script src="/app.js"></script>
+</body>
+</html>
